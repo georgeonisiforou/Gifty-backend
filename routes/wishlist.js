@@ -24,7 +24,8 @@ router.post("/", async (req, res) => {
   let obj = {
     price:
       $("meta[property='og:price:amount']").attr("content") ||
-      $("meta[property='product:price:amount']").attr("content"),
+      $("meta[property='product:price:amount']").attr("content") ||
+      " (check seller's website)",
     title: $("meta[property='og:title']").attr("content"),
     seller: $("meta[property='og:site_name']").attr("content"),
     url: $("meta[property='og:url']").attr("content"),
@@ -45,15 +46,12 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/custom", async (req, res) => {
-  //scrape url
-  const response = await fetch(req.body);
-
   const newItem = new WishlistItem({
-    url: response.url,
-    seller: response.seller,
-    title: response.title,
-    price: response.price,
-    imgUrl: response.imgUrl,
+    url: req.body.url,
+    seller: req.body.seller,
+    title: req.body.title,
+    price: req.body.price,
+    imgUrl: req.body.imgUrl,
   });
 
   await newItem.save();
