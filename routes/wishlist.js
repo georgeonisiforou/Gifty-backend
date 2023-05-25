@@ -32,6 +32,7 @@ router.post("/", async (req, res) => {
     imgUrl: $("meta[property='og:image']").attr("content"),
   };
 
+  //insert joi validation
   const newItem = new WishlistItem({
     url: obj.url,
     seller: obj.seller,
