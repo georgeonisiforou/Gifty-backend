@@ -1,17 +1,23 @@
 var express = require("express");
 var router = express.Router();
 const cheerio = require("cheerio");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const WishlistItem = require("../models/wishlistItemModel");
 
-// const createWishlistItemSchema = Joi.object({
-//   text: Joi.string().min(3).max(30).required().label("TO-DO text"),
-// });
-
 //get all wishlist items
-router.get("/", async (req, res) => {
-  const items = await WishlistItem.find();
-  res.json(items);
+router.get("/:pageNum", async (req, res) => {
+  // const items = await WishlistItem.find();
+  // res.json(items);
+  const pageNum = req.params.pageNum;
+
+  const options = {
+    page: pageNum,
+    limit: 5,
+  };
+  WishlistItem.paginate({}, options, function (err, results) {
+    res.json(results);
+  });
 });
 
 //create new wishlist item
